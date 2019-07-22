@@ -1,0 +1,68 @@
+# Site
+name: "The Good Python"
+title: "The Good Python"
+description: "Do good things with Python"
+logo: 'assets/images/logo.png'
+repository: rishi93/rishi93.github.io
+github: [metadata]
+github_username: rishi93
+favicon: 'assets/images/logo.png'
+baseurl: ""
+google_analytics: 
+disqus: 'demowebsite'
+mailchimp-list: 'https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a530e124561927d3bd8&amp;id=8c3d2d214b'
+include: ["_pages"]
+permalink: /:title/
+
+# Authors
+authors:
+  rishi:
+    name: Rishi
+    display_name: Rishi
+    gravatar: e56154546cf4be74e393c62d1ae9f9d4
+    email: rishi93dev@gmail.com
+    web: https://www.wowthemes.net
+    twitter: https://twitter.com/wowthemesnet
+    description: "Curious coder"
+  
+# Plugins
+plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-seo-tag
+#  - jekyll-archives
+
+# Have to remove jekyll-archives for site to work on github pages
+# Archives
+#jekyll-archives:
+#  enabled:
+#    - categories
+#  layout: archive
+#  permalinks:
+#    category: '/category/:name/'
+    
+# Pagination 
+paginate: 9
+paginate_path: /page:num/
+    
+# Other
+markdown: kramdown
+remote-theme: wowthemesnet/mediumish-theme-jekyll
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: true
+
+# Adsense (change to "enabled" to activate, also your client id and ad slot. Create a new ad unit from your Adsense account to get the slot.)
+adsense: "disabled"
+adsense-data-ad-client: "ca-pub-3412143450191416"
+adsense-data-ad-slot: "1363087678"
+
+# Lazy Images ("enabled" or "disabled")
+lazyimages: "disabled"
+
+exclude: [changelog.md, LICENSE.txt, README.md, Gemfile, Gemfile.lock]
