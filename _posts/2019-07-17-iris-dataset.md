@@ -32,6 +32,7 @@ We use pandas to load the CSV (comma separated values) into a DataFrame. We can 
 df = pd.read_csv('Iris.csv')
 ```
 The read_csv function reads the CSV file into a Pandas DataFrame.  
+To learn more about Pandas: [Click here]({{ site.baseurl }}{% post_url 2019-07-27-pandas-intro %})   
 
 # Take a look at the data
 ```python
@@ -93,7 +94,7 @@ y_train = df.iloc[:120, -1:].to_numpy()
 x_test = df.iloc[120:, 1:-1].to_numpy()
 y_test = df.iloc[120:, -1:].to_numpy()
 ```
-The iloc() command helps us to slice the DataFrame. For more detailed explanation, click here
+The iloc() command helps us to slice the DataFrame. For more detailed explanation, [Click here]({{ site.baseurl }}{% post_url 2019-07-27-pandas-intro %})  
 The to_numpy() function converts the DataFrame into Numpy arrays. These numpy arrays will be the input to our neural network.  
 
 # Build the model
