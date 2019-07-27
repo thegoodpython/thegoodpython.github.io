@@ -60,6 +60,25 @@ Neural network can only work with integer values, and not string values.
 Therefore, We convert the string values to integer values starting from 0.  
 The first label name is converted to 0, the second to 1, and so on...  
 
+# Normalize the numerical inputs
+```python
+def normalize_column(df, column):
+    max_value = df[column].max()
+    min_value = df[column].min()
+    df[column] = (df[column] - min_value)/(max_value - min_value)
+    return df
+
+df = normalize_column(df, 'SepalLengthCm')
+df = normalize_column(df, 'SepalWidthCm')
+df = normalize_column(df, 'PetalLengthCm')
+df = normalize_column(df, 'PetalWidthCm')
+```
+Neural Networks work best when the input values lie between 0 and 1.  
+We notice that the values of the width and length of the flower are much beyond the 0 and 1 range.  
+To scale them down to the 0 to 1 range, we use Min-Max normalization. We subtract each value by the minimum value and then divide this by the difference between the maximum and minimum values.  
+
+After this operation, all our values will be between 0 and 1.  
+
 # Shuffle the dataset
 ```python
 df = df.sample(frac=1)
@@ -123,4 +142,4 @@ print(test_acc)
 We run our neural network on the test set. The test set contains examples that the neural network has never seen before. We print the accuracy of the neural network's output for the test set.  
 
 # Summary
-We have managed to train a neural network to guess the iris species, based on the dimensions of the flower. The accuracy was greater than 90%. 
+We have managed to train a neural network to guess the iris species, based on the dimensions of the flower. The accuracy was almost 100%. 
