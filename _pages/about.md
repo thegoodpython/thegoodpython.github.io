@@ -18,7 +18,7 @@ comments: true
 <p>Articles will introduce the different powerful libraries in Python.</p>
 
 <h4>Questions or bug reports?</h4>
-<p>Please write them to rishi93dev@gmail.com</p>
+<p>Please write them to admin@thegoodpython.com</p>
 
 </div>
 

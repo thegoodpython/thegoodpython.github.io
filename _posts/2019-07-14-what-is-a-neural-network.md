@@ -4,7 +4,6 @@ title: "What is a neural network"
 author: rishi
 category: general
 post-image: assets/images/neural_network.png
-publish: true
 ---
 
 ## What is a Neural Network ?

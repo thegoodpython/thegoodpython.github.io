@@ -4,7 +4,6 @@ title: "Image prediction"
 author: rishi
 categories: [tensorflow, keras]
 post-image: assets/images/mobilenet.png
-publish: true
 ---
 
 In this tutorial, we will see how to write a program that uses a neural network that has already been trained.  

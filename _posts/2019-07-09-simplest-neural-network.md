@@ -2,10 +2,8 @@
 layout: post
 title:  "Simplest Neural Network (with Keras)"
 author: rishi
-featured: true
 categories: [tensorflow, keras]
 post-image: assets/images/workflow.png
-publish: true
 ---
 
 In this tutorial, we will learn how to write our own neural network.  
