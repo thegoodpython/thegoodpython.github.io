@@ -121,3 +121,6 @@ test_loss, test_acc = model.evaluate(x_test, y_test)
 print(test_acc)
 ```
 We run our neural network on the test set. The test set contains examples that the neural network has never seen before. We print the accuracy of the neural network's output for the test set.  
+
+# Summary
+We have managed to train a neural network to guess the iris species, based on the dimensions of the flower. The accuracy was greater than 90%. 
