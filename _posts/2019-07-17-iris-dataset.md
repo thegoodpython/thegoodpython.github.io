@@ -18,7 +18,7 @@ The length and width of the petal and sepal of three iris species are given.
 
 Given the dimensions of the flower, we will predict the species of the flower. 
 
-The full code can be found here: [Click here]()  
+The full code can be found here: [Click here](https://nbviewer.jupyter.org/github/rishi93/thegoodpython_notebooks/blob/master/iris-classification.ipynb)  
 
 # Import the libraries
 ```python
