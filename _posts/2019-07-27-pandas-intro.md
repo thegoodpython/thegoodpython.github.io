@@ -3,12 +3,15 @@ layout: post
 title: "Quick introduction to Pandas"
 author: rishi
 categories: [pandas python]
+post-image: assets/images/pandas.jpg
 ---
 
 This tutorial will serve as a quick introduction to Pandas for handling CSV data.  
 CSV data is the most common format for storing and distributing structured data.  
 Many Machine Learning datasets are distributed as CSV datafiles.  
 After going through this tutorial, you will able to handle CSV files as input for your neural networks.  
+
+![Panda]({{ site.baseurl }}/assets/images/pandas.jpg)
 
 # Install Pandas
 ```bash

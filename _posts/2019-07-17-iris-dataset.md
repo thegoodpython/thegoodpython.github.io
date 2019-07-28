@@ -1,8 +1,7 @@
 ---
 layout: post
-title: Iris Dataset
+title: Iris species classification
 author: rishi
-featured: true
 categories: [tensorflow, keras]
 post-image: assets/images/iris-species.png
 ---
@@ -17,6 +16,7 @@ The length and width of the petal and sepal of three iris species are given.
 ![Iris species]({{ site.baseurl }}/assets/images/iris-species.png)
 
 Given the dimensions of the flower, we will predict the species of the flower. 
+There are three Iris species: Iris setosa, Iris versicolor, Iris virginica  
 
 The full code can be found here: [Click here](https://nbviewer.jupyter.org/github/rishi93/thegoodpython_notebooks/blob/master/iris-classification.ipynb)  
 
