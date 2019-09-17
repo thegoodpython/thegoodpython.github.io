@@ -2,12 +2,11 @@
 layout: post
 title: Heart disease classification
 author: rishi
-featured: true
 categories: [tensorflow keras]
 post-image: assets/images/heart-disease.png
 ---
 
-In this dataset, we will explore the Heart Disease dataset from the UCI Machine Learning Repository.  
+In this tutorial, we will explore the Heart Disease dataset from the UCI Machine Learning Repository.  
 You can download the dataset from Kaggle: [Click here](https://www.kaggle.com/ronitf/heart-disease-uci) (Please note that, you will need to sign in to download the dataset).  
 
 ![Healthy heart vs Heart attack]({{ site.baseurl }}/assets/images/heart-disease.png)
@@ -52,11 +51,15 @@ The full code can be found here: [Click here](https://nbviewer.jupyter.org/githu
 
 ## Import the libraries
 ```python
-import pandas as pd
 import tensorflow as tf
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 ```
+We use tensorflow to build the neural network model.  
+Numpy is used to handle n-dimensional Numpy arrays.  
 We use Pandas to load the CSV (Comma Separated Values) data into a DataFrame. We can extract data from this DataFrame into Numpy arrays. We will use the Numpy arrays as input to the Neural Networks.   
-We will use Tensorflow to build our Neural Network.  
+Matplotlib is used to generate plots. We will plot the loss and accuracy during the training process.  
 
 ## Read the input data
 ```python
@@ -71,20 +74,44 @@ print(df.head())
 ```
 Print the first few rows of the dataset, to have a look at it.  
 
-## Normalize the numerical inputs
+## Look at the number of rows and columns
 ```python
-def normalize_column(df, column):
-    max_value = df[column].max()
-    min_value = df[column].min()
-    df[column] = (df[column] - min_value)/(max_value - min_value)
-    return df
+rows, columns = df.shape
+print(rows)
+print(columns)
+```
+We take a look the total number of samples and the number of features for each sample.  
 
-df = normalize_column(df, "age")
-df = normalize_column(df, "trestbps")
-df = normalize_column(df, "chol")
-df = normalize_column(df, "thalach")
-df = normalize_column(df, "oldpeak")
-df = normalize_column(df, "ca")
+## Shuffle the data
+```python
+df = df.sample(frac=1.0)
+```
+
+## Split the data into training and testing
+```python
+train_data = df.iloc[:250, :]
+test_data = df.iloc[250:, :]
+
+x_train = train_data.iloc[:, :-1]
+y_train = train_data.iloc[:, -1:]
+
+x_test = test_data.iloc[:, :-1]
+y_test = test_data.iloc[:, -1:]
+```
+
+## Scale the numerical inputs
+```python
+def scale_column(train_data, test_data, column):
+    min_value = df[column].min()
+    max_value = df[column].max()
+    train_data[column] = (train_data[column] - min_value)/(max_value - min_value)
+    test_data[column] = (test_data[column] - min_value)/(max_value - min_value)
+
+scale_column(df, "age")
+scale_column(df, "trestbps")
+scale_column(df, "chol")
+scale_column(df, "thalach")
+scale_column(df, "oldpeak")
 ```
 Neural networks work best when the input values lie between 0 and 1.  
 We notice that certain numerical columns have values beyond the 0 to 1 range.  
@@ -92,16 +119,19 @@ To scale them down to the 0 to 1 range, we use Min-Max normalization. We subtrac
 
 ## Convert categorical input to one hot encoding
 ```python
-def make_one_hot_encoding(df, column):
-    values = df.pop(column)
-    unique_values = values.unique()
+def one_hot_encoding(train_data, test_data, column):
+    train_values = train_data.pop(column)
+    test_values = test_data.pop(column)
+    unique_values = train_values.unique()
     unique_values = sorted(unique_values)
     for unique_value in unique_values:
-        df[column + str(unique_value)] = (values == unique_value)*1.0
-    return df
+        train_data[column + str(unique_value)] = (train_values == unique_value) * 1
+        test_data[column + str(unique_value)] = (test_values == unique_value) * 1
 
-df = make_one_hot_encoding(df, "cp")
-df = make_one_hot_encoding(df, "thal")
+one_hot_encoding(x_train, x_test, "cp")
+one_hot_encoding(x_train, x_test, "slope")
+one_hot_encoding(x_train, x_test, "ca")
+one_hot_encoding(x_train, x_test, "thal")
 ```
 We convert the categorical inputs into one-hot encoding values.  
 Below is an example of one-hot encoding.  
@@ -109,38 +139,30 @@ Below is an example of one-hot encoding.
 
 ## Take a look at the final transformed data
 ```python
-print(df.head())
+print(x_train.head())
 ```
-We take a look at our final data. We notice that we now have 19 columns.  
+We take a look at our final data. We notice that we now have 25 columns.  
 
-## Shuffle the data
+## Convert to Numpy arrays
 ```python
-df = df.sample(frac=1)
-```
-We shuffle the dataset.  
+x_train = x_train.to_numpy()
+y_train = y_train.to_numpy()
 
-## Split the dataset into training set and test set
-```python
-x_train = df.iloc[:273, :-1].to_numpy()
-y_train = df.iloc[:273, -1:].to_numpy()
-
-x_test = df.iloc[273:, :-1].to_numpy()
-y_test = df.iloc[273:, -1:].to_numpy()
+x_test = x_test.to_numpy()
+y_test = y_test.to_numpy()
 ```
-We use 273 samples for training purpose, and the rest (30 samples) are used for testing.  
 
 ## Build the model
 ```python
 model = tf.keras.Sequential()
 
-model.add(tf.keras.layers.Input(shape=[19]))
-model.add(tf.keras.layers.Dense(units=64, activation='relu'))
-model.add(tf.keras.layers.Dense(units=64, activation='relu'))
+model.add(tf.keras.layers.Input(shape=[25]))
+model.add(tf.keras.layers.Dense(units=32, activation='relu'))
 model.add(tf.keras.layers.Dense(units=1, activation='sigmoid'))
 ```
-We build a Neural Network model with an input layer, 2 hidden layers, and one output layer.  
-**Input layer**: Each patient's data consists of 19 values, so our input layer will accept a one-dimensional vector of 19 values.  
-**Hidden layers**: We have 2 hidden layers each with 64 neurons, and Rectified-Linear Unit activation.  
+We build a Neural Network model with an input layer, one hidden layer, and one output layer.  
+**Input layer**: Each patient's data consists of 25 values, so our input layer will accept a one-dimensional vector of 25 values.  
+**Hidden layers**: We have 1 hidden layers with 32 neurons, and Rectified-Linear Unit activation.  
 **Output layer**: Since we have only 2 output possibilities (Healthy or not healthy), a single neuron with sigmoid activation is sufficient. A sigmoid function will output either 0 or 1.  
 
 ## Choose Loss function and Optimizer
@@ -153,7 +175,7 @@ We want to focus on accuracy (percentage of correct guesses) as our metric.
 
 ## Start the training process
 ```python
-model.fit(x_train, y_train, epochs=10)
+history = model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=10)
 ```
 We will train our neural network on the training data for 10 iterations.  
 
@@ -165,5 +187,20 @@ print(test_acc)
 ```
 We run our neural network on the test set. The test set consists of examples that the neural network has never seen before. We print the accuracy of the neural network on the test set.  
 
+## Plot the training and validation loss
+```python
+plt.figure(figsize=(20, 10))
+plt.subplot(2, 2, 1)
+plt.plot(history.history['loss'])
+plt.subplot(2, 2, 2)
+plt.plot(history.history['accuracy'])
+plt.subplot(2, 2, 3)
+plt.plot(history.history['val_loss'])
+plt.subplot(2, 2, 4)
+plt.plot(history.history['val_accuracy'])
+plt.show()
+```
+We observe that our training and validation loss decreased steadily while the training and validation accuracy increased steadily. This is a good result.  
+
 ## Summary
-We have managed to train a neural network to predict if the patient has heart disease or not based on his hospital data. The accuracy was more than 97%.  
+We have managed to train a neural network to predict if the patient has heart disease or not based on his hospital data. The accuracy was more than 83%.  
